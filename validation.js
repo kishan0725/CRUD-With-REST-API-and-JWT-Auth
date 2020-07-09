@@ -34,3 +34,17 @@ const loginValidation = data => {
 }
 
 module.exports.loginValidation = loginValidation;
+
+// post validation
+const postValidation = data => {
+    const schema = Joi.object({
+        title: Joi.string()
+            .max(255)
+            .required(),
+        desc: Joi.string()
+            .required()
+    });
+    return schema.validate(data);
+}
+
+module.exports.postValidation = postValidation;

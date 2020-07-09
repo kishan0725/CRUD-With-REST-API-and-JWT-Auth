@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const verify = require('./verifyToken');
+const { postValidation } = require('../validation');
 const Post = require('../models/Posts');
 
 // read all the posts
@@ -25,6 +26,11 @@ router.get("/", verify, async (req, res) => {
 
 // create a post
 router.post("/", verify, async (req, res) => {
+    // validate the post
+    const { error } = registerValidation(req.body); 
+    if (error) return res.status(400).send(error.details[0].message);
+
+    // create a valid post
     const post = new Post({
         _id: req.user._id,
         title: req.body.title,
